@@ -13,7 +13,7 @@ router.get(
 );
 
 router.get("/user",verifyToken,(req,res)=>{
-  res.status(200).json({userId:req.user._idd})
+  res.status(200).json({userId:req.user._id})
 })
 
 router.get(
