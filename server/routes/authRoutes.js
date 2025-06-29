@@ -1,6 +1,7 @@
 import express from "express";
 import passport from "passport";
 import jwt from "jsonwebtoken";
+import verifyToken from "../auth/verifyToken.js";
 
 const router = express.Router();
 
@@ -11,26 +12,30 @@ router.get(
   })
 );
 
+router.get("/user",verifyToken,(req,res)=>{
+  res.status(200).json({userId:req.user._idd})
+})
+
 router.get(
   "/google/callback",
   passport.authenticate("google", {
     session: false,
-    failureRedirect: "/",
+    failureRedirect: "/login",
   }),
 
   (req, res) => {
-    const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, {
       expiresIn: "6h",
     });
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure:false,
       sameSite: "lax",
       maxAge: 6 * 60 * 60 * 1000,
     });
 
-    res.redirect("http://localhost:5173/dashboard");
+    res.redirect("http://localhost:5173");
   }
 );
 
@@ -38,7 +43,7 @@ router.get("/logout", (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure:false,
   });
   res.status(200).json({message:"Logout Successful"})
 });

@@ -7,15 +7,8 @@ const router = express.Router();
 //New Task
 router.post("/", verifyToken, async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      dueDate,
-      priority,
-      status,
-      createdBy,
-      sharedWith,
-    } = req.body;
+    const { title, description, dueDate, priority, status, sharedWith } =
+      req.body;
 
     const newTask = new Task({
       title,
@@ -23,16 +16,20 @@ router.post("/", verifyToken, async (req, res) => {
       dueDate,
       priority,
       status,
-      createdBy: req.user.userId,
+      createdBy: new mongoose.Types.ObjectId(req.user._id),
       sharedWith,
     });
 
     await newTask.save();
     res.status(201).json(newTask);
   } catch (error) {
-    return res
+    console.error("Mongoose Save Error:", error);
+    res
       .status(500)
       .json({ message: "Error creating Task:", error: error.message });
+  } finally {
+    console.log("Payload received:", req.body);
+    console.log("User from token:", req.user);
   }
 });
 
@@ -40,7 +37,7 @@ router.post("/", verifyToken, async (req, res) => {
 router.get("/", verifyToken, async (req, res) => {
   try {
     const tasks = await Task.find({
-      $or: [{ createdBy: req.user.userId }, { sharedWith: req.user.userId }],
+      $or: [{ createdBy: req.user._id }, { sharedWith: req.user._id }],
     }).sort({ createdAt: -1 });
     res.status(200).json(tasks);
   } catch (error) {
@@ -58,7 +55,7 @@ router.put("/:id", verifyToken, async (req, res) => {
     const updatedTask = await Task.findOneAndUpdate(
       {
         _id: taskId,
-        createdBy: req.user.userId,
+        createdBy: req.user._id,
       },
       req.body,
       { new: true }
@@ -84,10 +81,10 @@ router.delete("/:id", verifyToken, async (req, res) => {
 
     const deleteTask = await Task.findOneAndDelete({
       _id: taskId,
-      createdBy: req.user.userId,
+      createdBy: req.user._id,
     });
 
-    if (!deleteId) {
+    if (!deleteTask) {
       return res
         .status(404)
         .json({ message: "Task not found or unauthorized" });
