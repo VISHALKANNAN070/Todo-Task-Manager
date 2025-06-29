@@ -2,7 +2,7 @@ import "../styles/login.css";
 
 const Login = () => {
   const googleLogin = () => {
-    window.location.href = "http://localhost:5000/api/auth/google";
+    window.location.href = "https://todo-task-manager-10c3.onrender.com/api/auth/google";
   };
 
   return (

@@ -11,7 +11,7 @@ const App = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/auth/user", {
+        const res = await axios.get("https://todo-task-manager-10c3.onrender.com/api/auth/user", {
           withCredentials: true,
         });
         console.log("User authenticated:", res.data);

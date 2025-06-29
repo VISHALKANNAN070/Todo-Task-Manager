@@ -21,7 +21,7 @@ const Tasks = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/task", {
+        const res = await axios.get("https://todo-task-manager-10c3.onrender.com/api/task", {
           withCredentials: true,
         });
         setTasks(res.data);
@@ -54,7 +54,7 @@ const Tasks = () => {
     try {
       if (editId) {
         const res = await axios.put(
-          `http://localhost:5000/api/task/${editId}`,
+          `https://todo-task-manager-10c3.onrender.com/api/task/${editId}`,
           payload,
           { withCredentials: true }
         );
@@ -64,7 +64,7 @@ const Tasks = () => {
         setEditId(null);
       } else {
         const res = await axios.post(
-          "http://localhost:5000/api/task",
+          "https://todo-task-manager-10c3.onrender.com/api/task",
           payload,
           {
             withCredentials: true,
@@ -99,7 +99,7 @@ const Tasks = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/task/${id}`, {
+      await axios.delete(`https://todo-task-manager-10c3.onrender.com/api/task/${id}`, {
         withCredentials: true,
       });
       setTasks((prev) => prev.filter((t) => t._id !== id));
