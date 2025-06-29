@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import connectDB from './models/db.js'
 import passport from './auth/passportAuth.js'
 import authRoutes from './routes/authRoutes.js'
+import taskRoutes from './routes/taskRoutes.js'
 import cookieParser from 'cookie-parser'
 
 
@@ -23,6 +24,7 @@ app.use(cookieParser())
 app.use(passport.initialize())
 
 app.use('/api/auth',authRoutes)
+app.use('/api/task',taskRoutes)
 
 app.get('/',(req,res)=>{
     res.send("Server is running...")
