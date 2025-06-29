@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import "../styles/tasks.css"
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -108,115 +109,54 @@ const Tasks = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center">Task Manager</h1>
+   <div className="task-manager-container">
+  <h1 className="task-manager-title">Task Manager</h1>
 
-      <div className="max-w-3xl mx-auto bg-white p-6 rounded shadow mb-10">
-        <h2 className="text-xl font-semibold mb-4">
-          {editId ? "Edit Task" : "Add New Task"}
-        </h2>
+  <div className="task-form-container">
+    <h2 className="task-form-header">{editId ? "Edit Task" : "Add New Task"}</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input
-            type="text"
-            name="title"
-            value={form.title}
-            onChange={handleChange}
-            placeholder="Title"
-            className="border px-3 py-2 rounded"
-          />
-          <input
-            type="date"
-            name="dueDate"
-            value={form.dueDate}
-            onChange={handleChange}
-            className="border px-3 py-2 rounded"
-          />
-          <input
-            type="text"
-            name="priority"
-            value={form.priority}
-            onChange={handleChange}
-            placeholder="Priority (Low/Medium/High)"
-            className="border px-3 py-2 rounded"
-          />
-          <input
-            type="text"
-            name="status"
-            value={form.status}
-            onChange={handleChange}
-            placeholder="Status (pending/In Progress/Done)"
-            className="border px-3 py-2 rounded"
-          />
-          <input
-            type="text"
-            name="sharedWith"
-            value={form.sharedWith}
-            onChange={handleChange}
-            placeholder="Shared with (comma-separated emails)"
-            className="border px-3 py-2 rounded col-span-1 md:col-span-2"
-          />
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-            placeholder="Description"
-            className="border px-3 py-2 rounded col-span-1 md:col-span-2"
-          />
-        </div>
-
-        <button
-          onClick={handleSubmit}
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          {editId ? "Update Task" : "Add Task"}
-        </button>
-      </div>
-
-      <div className="max-w-4xl mx-auto space-y-4">
-        {loading ? (
-          <p>Loading tasks...</p>
-        ) : tasks.length === 0 ? (
-          <p className="text-center text-gray-500">No tasks available</p>
-        ) : (
-          tasks.map((task) => (
-            <div
-              key={task._id}
-              className="bg-white shadow p-4 rounded flex flex-col md:flex-row justify-between items-start md:items-center"
-            >
-              <div>
-                <h3 className="text-lg font-semibold">{task.title}</h3>
-                <p className="text-sm text-gray-600">{task.description}</p>
-                <p className="text-sm">
-                  <strong>Due:</strong> {task.dueDate?.split("T")[0]} |{" "}
-                  <strong>Priority:</strong> {task.priority} |{" "}
-                  <strong>Status:</strong> {task.status}
-                </p>
-                {task.sharedWith?.length > 0 && (
-                  <p className="text-sm text-gray-500">
-                    Shared with: {task.sharedWith.join(", ")}
-                  </p>
-                )}
-              </div>
-              <div className="flex gap-2 mt-2 md:mt-0">
-                <button
-                  onClick={() => handleEdit(task)}
-                  className="px-3 py-1 bg-yellow-400 text-white rounded"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(task._id)}
-                  className="px-3 py-1 bg-red-500 text-white rounded"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
+    <div className="task-form-grid">
+      <input name="title" value={form.title} onChange={handleChange} placeholder="Title" />
+      <input type="date" name="dueDate" value={form.dueDate} onChange={handleChange} />
+      <input name="priority" value={form.priority} onChange={handleChange} placeholder="Priority (Low/Medium/High)" />
+      <input name="status" value={form.status} onChange={handleChange} placeholder="Status (Pending/In Progress/Done)" />
+      <input name="sharedWith" value={form.sharedWith} onChange={handleChange} placeholder="Shared with (comma-separated emails)" style={{ gridColumn: 'span 2' }} />
+      <textarea name="description" value={form.description} onChange={handleChange} placeholder="Description" />
     </div>
+
+    <button onClick={handleSubmit} className="task-submit-button">
+      {editId ? "Update Task" : "Add Task"}
+    </button>
+  </div>
+
+  <div className="task-list-container">
+    {loading ? (
+      <p>Loading tasks...</p>
+    ) : tasks.length === 0 ? (
+      <p className="text-center text-gray-500">No tasks available</p>
+    ) : (
+      tasks.map((task) => (
+        <div key={task._id} className="task-card">
+          <div className="task-details">
+            <div className="task-title">{task.title}</div>
+            <div className="task-meta">
+              {task.description}<br />
+              <strong>Due:</strong> {task.dueDate?.split("T")[0]} | <strong>Priority:</strong> {task.priority} | <strong>Status:</strong> {task.status}
+            </div>
+            {task.sharedWith?.length > 0 && (
+              <div className="task-shared">Shared with: {task.sharedWith.join(", ")}</div>
+            )}
+          </div>
+          <div className="task-actions">
+            <button onClick={() => handleEdit(task)} className="task-button edit">Edit</button>
+            <button onClick={() => handleDelete(task._id)} className="task-button delete">Delete</button>
+          </div>
+        </div>
+      ))
+    )}
+  </div>
+</div>
+
   );
 };
 
