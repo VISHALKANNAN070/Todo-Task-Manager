@@ -108,8 +108,22 @@ const Tasks = () => {
     }
   };
 
+   const handleLogout = async () => {
+    try {
+      await axios.get("https://todo-task-manager-10c3.onrender.com/api/auth/logout", {
+        withCredentials: true,
+      });
+      window.location.href = "/login"; // Redirect to login or home page
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
    <div className="task-manager-container">
+    <button onClick={handleLogout} className="logout-button">
+      Logout
+    </button>
   <h1 className="task-manager-title">Task Manager</h1>
 
   <div className="task-form-container">

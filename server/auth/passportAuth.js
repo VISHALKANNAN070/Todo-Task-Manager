@@ -1,10 +1,12 @@
 import passport from "passport";
 import GoogleStrategy from "passport-google-oauth20";
+import GitHubStrategy from "passport-github2";
 import User from "../models/userModel.js";
 import dotenv from "dotenv";
 
 dotenv.config();
 
+// Google OAuth Strategy
 passport.use(
   new GoogleStrategy(
     {
@@ -21,6 +23,34 @@ passport.use(
             name: profile.displayName,
             email: profile.emails[0].value,
             authProvider: "google",
+            providerId: profile.id,
+          });
+        }
+        return done(null, user);
+      } catch (error) {
+        return done(error, null);
+      }
+    }
+  )
+);
+
+// GitHub OAuth Strategy
+passport.use(
+  new GitHubStrategy(
+    {
+      clientID: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      callbackURL:" https://todo-task-manager-10c3.onrender.com/api/auth/github/callback",
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        let user = await User.findOne({ providerId: profile.id });
+
+        if (!user) {
+          user = await User.create({
+            name: profile.displayName,
+            email: profile.emails?.[0].value,
+            authProvider: "github",
             providerId: profile.id,
           });
         }
