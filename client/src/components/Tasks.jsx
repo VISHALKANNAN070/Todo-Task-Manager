@@ -95,7 +95,7 @@ const Tasks = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(import.meta.env.VITE_API_URL + `/api/task/${id}`, {
+      await axios.delete(import.meta.env.VITE_API_URL + `/api/task/${editId}`, {
         withCredentials: true,
       });
       setTasks((prev) => prev.filter((t) => t._id !== id));
