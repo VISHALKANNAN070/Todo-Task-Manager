@@ -28,8 +28,8 @@ router.get(
     
     res.cookie("token", token, {
       httpOnly: true,
-      secure:false,
-      sameSite: "lax",
+      secure:true,
+      sameSite: "None",
       maxAge: 6 * 60 * 60 * 1000,
     });
     
@@ -57,8 +57,8 @@ router.get(
     
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, 
-      sameSite: "lax",
+      secure: true, 
+      sameSite: "None",
       maxAge: 6 * 60 * 60 * 1000,
     });
     
@@ -73,8 +73,8 @@ router.get("/user",verifyToken,(req,res)=>{
 router.get("/logout", (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    sameSite: "lax",
-    secure:false,
+    sameSite: "None",
+    secure:true,
   });
   res.status(200).json({message:"Logout Successful"})
 });
