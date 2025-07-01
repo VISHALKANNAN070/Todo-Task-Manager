@@ -16,16 +16,24 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        let user = await User.findOne({ providerId: profile.id });
+        const email = profile.emails[0].value;
+
+        let user = await User.findOne({ email });
 
         if (!user) {
           user = await User.create({
             name: profile.displayName,
-            email: profile.emails[0].value,
+            email,
             authProvider: "google",
             providerId: profile.id,
           });
+        } else if (!user.providerId) {
+          // Optional: attach provider info to existing user
+          user.providerId = profile.id;
+          user.authProvider = "google";
+          await user.save();
         }
+
         return done(null, user);
       } catch (error) {
         return done(error, null);
@@ -44,16 +52,23 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        let user = await User.findOne({ providerId: profile.id });
+        const email = profile.emails?.[0]?.value;
+
+        let user = await User.findOne({ email });
 
         if (!user) {
           user = await User.create({
-            name: profile.displayName,
-            email: profile.emails?.[0].value,
+            name: profile.displayName || profile.username,
+            email,
             authProvider: "github",
             providerId: profile.id,
           });
+        } else if (!user.providerId) {
+          user.providerId = profile.id;
+          user.authProvider = "github";
+          await user.save();
         }
+
         return done(null, user);
       } catch (error) {
         return done(error, null);

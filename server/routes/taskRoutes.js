@@ -1,14 +1,14 @@
 import express from "express";
 import Task from "../models/taskModel.js";
 import verifyToken from "../auth/verifyToken.js";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
-//New Task
+// Create New Task
 router.post("/", verifyToken, async (req, res) => {
   try {
-    const { title, description, dueDate, priority, status, sharedWith } =
-      req.body;
+    const { title, description, dueDate, priority, status } = req.body;
 
     const newTask = new Task({
       title,
@@ -17,7 +17,6 @@ router.post("/", verifyToken, async (req, res) => {
       priority,
       status,
       createdBy: new mongoose.Types.ObjectId(req.user._id),
-      sharedWith,
     });
 
     await newTask.save();
@@ -26,28 +25,28 @@ router.post("/", verifyToken, async (req, res) => {
     console.error("Mongoose Save Error:", error);
     res
       .status(500)
-      .json({ message: "Error creating Task:", error: error.message });
+      .json({ message: "Error creating Task", error: error.message });
   } finally {
     console.log("Payload received:", req.body);
     console.log("User from token:", req.user);
   }
 });
 
-//Fetch All Tasks
+// Fetch All Tasks for Logged-in User
 router.get("/", verifyToken, async (req, res) => {
   try {
-    const tasks = await Task.find({
-      $or: [{ createdBy: req.user._id }, { sharedWith: req.user._id }],
-    }).sort({ createdAt: -1 });
+    const tasks = await Task.find({ createdBy: req.user._id }).sort({
+      createdAt: -1,
+    });
     res.status(200).json(tasks);
   } catch (error) {
-    return res
+    res
       .status(500)
       .json({ message: "Error fetching tasks", error: error.message });
   }
 });
 
-//Update Task
+// Update Task
 router.put("/:id", verifyToken, async (req, res) => {
   try {
     const taskId = req.params.id;
@@ -66,15 +65,16 @@ router.put("/:id", verifyToken, async (req, res) => {
         .status(404)
         .json({ message: "Task not found or unauthorized" });
     }
+
     res.status(200).json(updatedTask);
   } catch (error) {
-    return res
+    res
       .status(500)
       .json({ message: "Error updating Task", error: error.message });
   }
 });
 
-//Delete Task
+// Delete Task
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
     const taskId = req.params.id;
@@ -89,9 +89,10 @@ router.delete("/:id", verifyToken, async (req, res) => {
         .status(404)
         .json({ message: "Task not found or unauthorized" });
     }
+
     res.status(200).json({ message: "Task successfully deleted" });
   } catch (error) {
-    return res
+    res
       .status(500)
       .json({ message: "Error deleting Task", error: error.message });
   }

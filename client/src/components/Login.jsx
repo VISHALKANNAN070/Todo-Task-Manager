@@ -3,7 +3,7 @@ import "../styles/login.css";
 const Login = () => {
   const handleGoogleLogin = () => {
     try{
-      window.location.href = import.meta.VITE_API_URL + "/api/auth/google";
+      window.location.href = import.meta.env.VITE_API_URL + "/api/auth/google";
     }
     catch(error){
       console.error("Google Login Failed",error.message);
@@ -13,7 +13,7 @@ const Login = () => {
 
   const handleGitHubLogin = () => {
     try{
-      window.location.href = import.meta.VITE_API_URL + "/api/auth/github";
+      window.location.href = import.meta.env.VITE_API_URL + "/api/auth/github";
     }
     catch(error){
       console.error("Github Login Failed",error.message);

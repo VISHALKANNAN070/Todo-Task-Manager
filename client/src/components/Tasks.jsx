@@ -20,10 +20,14 @@ const Tasks = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const res = await axios.get(import.meta.VITE_API_URL + "/api/task", {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          import.meta.env.VITE_API_URL + "/api/task",
+          {
+            withCredentials: true,
+          }
+        );
         setTasks(res.data);
+        console.log("Fetched data:", res.data);
       } catch (err) {
         console.error("Failed to fetch tasks:", err.message);
       } finally {
@@ -49,7 +53,7 @@ const Tasks = () => {
     try {
       if (editId) {
         const res = await axios.put(
-          import.meta.VITE_API_URL + `/api/task/${editId}`,
+          import.meta.env.VITE_API_URL + `/api/task/${editId}`,
           payload,
           { withCredentials: true }
         );
@@ -59,7 +63,7 @@ const Tasks = () => {
         setEditId(null);
       } else {
         const res = await axios.post(
-          import.meta.VITE_API_URL + "/api/task",
+          import.meta.env.VITE_API_URL + "/api/task",
           payload,
           { withCredentials: true }
         );
@@ -91,7 +95,7 @@ const Tasks = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(import.meta.VITE_API_URL + `/api/task/${id}`, {
+      await axios.delete(import.meta.env.VITE_API_URL + `/api/task/${id}`, {
         withCredentials: true,
       });
       setTasks((prev) => prev.filter((t) => t._id !== id));
@@ -102,7 +106,7 @@ const Tasks = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get(import.meta.VITE_API_URL + "/api/auth/logout", {
+      await axios.get(import.meta.env.VITE_API_URL + "/api/auth/logout", {
         withCredentials: true,
       });
       window.location.href = "/login";
@@ -119,14 +123,41 @@ const Tasks = () => {
       <h1 className="task-manager-title">Task Manager</h1>
 
       <div className="task-form-container">
-        <h2 className="task-form-header">{editId ? "Edit Task" : "Add New Task"}</h2>
+        <h2 className="task-form-header">
+          {editId ? "Edit Task" : "Add New Task"}
+        </h2>
 
         <div className="task-form-grid">
-          <input name="title" value={form.title} onChange={handleChange} placeholder="Title" />
-          <input type="date" name="dueDate" value={form.dueDate} onChange={handleChange} />
-          <input name="priority" value={form.priority} onChange={handleChange} placeholder="Priority (Low/Medium/High)" />
-          <input name="status" value={form.status} onChange={handleChange} placeholder="Status (Pending/In Progress/Done)" />
-          <textarea name="description" value={form.description} onChange={handleChange} placeholder="Description" />
+          <input
+            name="title"
+            value={form.title}
+            onChange={handleChange}
+            placeholder="Title"
+          />
+          <input
+            type="date"
+            name="dueDate"
+            value={form.dueDate}
+            onChange={handleChange}
+          />
+          <input
+            name="priority"
+            value={form.priority}
+            onChange={handleChange}
+            placeholder="Priority (Low/Medium/High)"
+          />
+          <input
+            name="status"
+            value={form.status}
+            onChange={handleChange}
+            placeholder="Status (Pending/In Progress/Done)"
+          />
+          <textarea
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            placeholder="Description"
+          />
         </div>
 
         <button onClick={handleSubmit} className="task-submit-button">
@@ -145,13 +176,26 @@ const Tasks = () => {
               <div className="task-details">
                 <div className="task-title">{task.title}</div>
                 <div className="task-meta">
-                  {task.description}<br />
-                  <strong>Due:</strong> {task.dueDate?.split("T")[0]} | <strong>Priority:</strong> {task.priority} | <strong>Status:</strong> {task.status}
+                  {task.description}
+                  <br />
+                  <strong>Due:</strong> {task.dueDate?.split("T")[0]} |{" "}
+                  <strong>Priority:</strong> {task.priority} |{" "}
+                  <strong>Status:</strong> {task.status}
                 </div>
               </div>
               <div className="task-actions">
-                <button onClick={() => handleEdit(task)} className="task-button edit">Edit</button>
-                <button onClick={() => handleDelete(task._id)} className="task-button delete">Delete</button>
+                <button
+                  onClick={() => handleEdit(task)}
+                  className="task-button edit"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(task._id)}
+                  className="task-button delete"
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))
