@@ -41,7 +41,6 @@ router.get(
   "/github",
   passport.authenticate("github", {
     scope: ["user:email"],
-    prompt:"select_account",
   })
 );
 
