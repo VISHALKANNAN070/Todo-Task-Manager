@@ -12,7 +12,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_SECRET,
-      callbackURL: "https://todo-task-manager-10c3.onrender.com/api/auth/google/callback",
+      callbackURL: process.env.GOOGLE_CB_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -40,7 +40,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL:" https://todo-task-manager-10c3.onrender.com/api/auth/github/callback",
+      callbackURL:process.env.GITHUB_CB_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {

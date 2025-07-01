@@ -1,34 +1,73 @@
+/* Reset styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Page Background */
 .login-container {
   min-height: 100vh;
+  background: linear-gradient(135deg, #1f1f1f, #2e2e2e);
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #f7f7f8; /* Light gray background */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #2e2e2e;
-  padding: 2rem;
 }
 
-.login-container h1 {
+/* Card Container */
+.login-box {
+  background-color: #121212;
+  padding: 3rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #2c2c2c;
+}
+
+/* Title */
+.login-title {
+  color: #ffffff;
   font-size: 2rem;
-  font-weight: 600;
   margin-bottom: 2rem;
-  color: #1a1a1a;
 }
 
-.login-container button {
+/* Common Button Styles */
+.login-button {
   background-color: #ffffff;
-  color: #1a1a1a;
-  font-size: 1rem;
-  padding: 0.75rem 1.5rem;
-  border: 1px solid #d1d1d1;
+  color: #1f1f1f;
+  border: none;
   border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
 }
 
-.login-container button:hover {
-  background-color: #f0f0f0;
-  border-color: #a0a0a0;
+/* GitHub Variant */
+.github-button {
+  background-color: #333333;
+  color: #f1f1f1;
+}
+
+/* Hover Effects */
+.login-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Logo Image */
+.login-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }

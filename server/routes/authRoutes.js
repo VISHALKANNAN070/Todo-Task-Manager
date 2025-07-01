@@ -32,7 +32,7 @@ router.get(
       maxAge: 6 * 60 * 60 * 1000,
     });
     
-    res.redirect("https://todo-task-manager-one.vercel.app/");
+    res.redirect(process.env.FRONTEND_URL);
   }
 );
 
@@ -56,12 +56,12 @@ router.get(
     
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // Set true in production with HTTPS
+      secure: false, 
       sameSite: "lax",
       maxAge: 6 * 60 * 60 * 1000,
     });
     
-    res.redirect("https://todo-task-manager-one.vercel.app/");
+    res.redirect(process.env.FRONTEND_URL);
   }
 );
 
