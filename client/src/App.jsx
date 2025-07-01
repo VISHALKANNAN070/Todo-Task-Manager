@@ -39,8 +39,6 @@ const App = () => {
           path="/login"
           element={login ? <Navigate to="/" /> : <Login />}
         />
-        {/* Optional: fallback route */}
-        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
   );
