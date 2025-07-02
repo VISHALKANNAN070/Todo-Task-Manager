@@ -128,30 +128,35 @@ const Tasks = () => {
         </h2>
 
         <div className="task-form-grid">
+        <label htmlFor="title">Title</label>
           <input
             name="title"
             value={form.title}
             onChange={handleChange}
             placeholder="Title"
           />
+          <label htmlFor="dueDate">Due Date</label>
           <input
             type="date"
             name="dueDate"
             value={form.dueDate}
             onChange={handleChange}
           />
+          <label htmlFor="priority">Priority</label>
           <input
             name="priority"
             value={form.priority}
             onChange={handleChange}
             placeholder="Priority (Low/Medium/High)"
           />
+          <label htmlFor="status">Status</label>
           <input
             name="status"
             value={form.status}
             onChange={handleChange}
             placeholder="Status (Pending/In Progress/Done)"
           />
+          <label htmlFor="description">Description</label>
           <textarea
             name="description"
             value={form.description}
